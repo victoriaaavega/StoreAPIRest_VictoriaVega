@@ -51,7 +51,13 @@ app.use((req,res,next)=>{
 
 app.use(globlaErrorHandler);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, ()=>{
-    console.log(`El servidor esta corriendo en el puerto ${PORT}`)
-})
+conectar().then(() => {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, ()=>{
+        console.log(`El servidor esta corriendo en el puerto ${PORT}`)
+    })
+
+}).catch(err => {
+    console.error('Error al conectar a MongoDB:', err);
+    process.exit(1);
+});

@@ -4,18 +4,18 @@ import { AppError } from '../utils/appError.js';
 class VentaController {
     static async crearVenta(req, res, next) {
         try {
-            const { total, iva, productosVenta } = req.body;
+            const { total, iva, productosventa } = req.body;
 
-            if (!total || !iva || !productosVenta) {
+            if (total === undefined || iva === undefined || !productosventa) {
                 return next(new AppError('Los campos total e iva son requeridos.', 400))
             }
 
-            const ventaData = { total, iva, productosVenta }
+            const ventaData = { total, iva, productosventa }
             const venta = await VentaDAO.crearVenta(ventaData)
             res.status(201).json(venta);
 
         } catch (error) {
-            next(new AppError('Ocurrió un error al crear la venta.', 500))
+            next(new AppError(`Ocurrió un error al crear la venta: ${error.message}`, 500));
         }
     }
 
@@ -36,3 +36,5 @@ class VentaController {
         }
     }
 }
+
+export default VentaController;

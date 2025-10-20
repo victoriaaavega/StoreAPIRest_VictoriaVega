@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { AppError } from './appError';
+import { AppError } from './appError.js';
 
 const validateJWT = (req, res, next) => {
     const token = req.header('Authorization');
