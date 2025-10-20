@@ -6,8 +6,8 @@ class ProductoController {
         try {
             const { nombre, precio, cantidad } = req.body;
 
-            if(!nombre || !precio || !cantidad) {
-                next(new AppError('Los campos nombre, precio y cantidad son requeridos.', 400));
+            if (!nombre || !precio || !cantidad) {
+                return next(new AppError('Los campos nombre, precio y cantidad son requeridos.', 400));
             }
 
             const productoData = { nombre, precio, cantidad };
@@ -24,8 +24,8 @@ class ProductoController {
             const id = req.params.id;
             const producto = await ProductoDAO.obtenerProductoPorId(id);
 
-            if(!producto) {
-                next(new AppError('Producto no encontrado', 404))
+            if (!producto) {
+                return next(new AppError('Producto no encontrado', 404))
             }
 
             res.status(200).json(producto);
@@ -40,8 +40,8 @@ class ProductoController {
             const limit = req.query.limit || 10;
             const productos = await ProductoDAO.obtenerProductos(limit);
 
-            if(!productos) {
-                next(new AppError('No se encontraron productos.', 404))
+            if (!productos) {
+                return next(new AppError('No se encontraron productos.', 404))
             }
 
             res.status(200).json(productos);
@@ -56,8 +56,8 @@ class ProductoController {
 
             const productoExists = await ProductoDAO.obtenerProductoPorId(id);
 
-            if(!productoExists) {
-                next(new AppError('Producto no encontrado', 404))
+            if (!productoExists) {
+                return next(new AppError('Producto no encontrado', 404))
             }
 
             const productoData = req.body;
@@ -76,17 +76,17 @@ class ProductoController {
 
             const productoExists = await ProductoDAO.obtenerProductoPorId(id);
 
-            if(!productoExists) {
-                next(new AppError('Producto no encontrado', 404))
+            if (!productoExists) {
+                return next(new AppError('Producto no encontrado', 404))
             }
 
             await ProductoDAO.eliminarProductoPorId(id);
 
-            res.status(200).json({message: 'Producto eliminado correctamente'};)
+            res.status(200).json({ message: 'Producto eliminado correctamente' });
         } catch (error) {
             next(new AppError('Ocurrió un error al eliminar el producto.', 500))
         }
     }
 }
 
-export defautl ProductoController;
+export default ProductoController;

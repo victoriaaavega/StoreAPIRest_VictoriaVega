@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import corsMiddleware from './utils/validateCORS.js';
 import jwt from 'jsonwebtoken';
 import productorouter from './routers/productoRouter.js';
+import ventarouter from './routers/ventaRouter.js';
 import { conectar } from './config/db.js';
 import validateJWT from './utils/validateJWT.js';
 
@@ -16,7 +17,7 @@ app.use(morgan('combined'));
 
 app.use(corsMiddleware);
 
-app.post('api/users/login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
     const { username, password } = req.body;
 
     if(username === 'admin' && password === 'password') {
@@ -37,10 +38,11 @@ app.post('api/users/login', (req, res) => {
     }
 })
 
-app.use(validateJWT);
+//app.use(validateJWT);
 
 //Middleware para exponer mis rutas y puedan ser accedidas
 app.use('/api/productos', validateJWT, productorouter)
+app.use('/api/ventas', validateJWT, ventarouter)
 
 app.use((req,res,next)=>{
     const error = new AppError(`No se ha podido acceder a ${req.originalUrl} en el servidor`, 404);
